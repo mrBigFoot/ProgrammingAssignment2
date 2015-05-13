@@ -1,15 +1,94 @@
-## Put comments here that give an overall description of what your
-## functions do
 
-## Write a short comment describing this function
+## ------------------------------------------------------------------
+##
+##                    Coursera  May 2015
+##                       R Course
+##             Peer Reviewed Programming 2 assignment
+
+## ------------------------------------------------------------------
+##
+##                       -Overview-
+##
+## ------------------------------------------------------------------
+
+##      -Two functions to demonstrate lexical scoping in R-
+
+## makeCacheMatix returns a named list to implement caching
+## This named list contains functions to access and set both the
+## target matrix and its inverse.
+
+## cacheSolve(x,...) inspects the global environment to see if the inverse
+## either needs to be computed or can simply be cached. If the computation is 
+## computationally expensive then caching of previous results makes sense.
+## This will frequently be the case for large matrices
+
+## usage: closure<-makeCacheMatrix(yourSquareMatrix)
+##        cacheSolve(closure) first call will compute inverse and cache it.
+##        cacheSolve(closure) second call will report usage of cache
+
+## ------------------------------------------------------------------
+
+## Function makeCacheMatrix
+ 
+## This function returns a named list referring to four internally defined functions which
+## in effect are returned as parameters. (functions are first class citizen in R)
 
 makeCacheMatrix <- function(x = matrix()) {
+  
+  mtx_cached<-NULL  ## initialize cached matrix variable to null
+  
+  set<-function(y){ ## assigns a new matrix y to x, in the global environment for subsequent inversion
+                    ## This function will be called via the return named list and so x will be taken from the
+                    ## global environment due to lexical scoping.
+    x<<-y
+    mtx_cached<-NULL ## re-initialize to null
+  }
+  
+  get<-function()x
+  
+  ## Note that <<- operator assigns inverse to mtx_cached and stores it in
+  ## the global environment. Any subsequent call will retrieve the cached inverse matrix
+  setinverse<-function(inverse) mtx_cached<<-inverse
+  
+  getinverse<-function() mtx_cached  ## simply retrieves cached inverse matrix
+  
+  ## named list data structure to expose matrix caching functions for return to caller
+  list(set = set, get = get,   
+       setinverse = setinverse,
+       getinverse = getinverse)
 
 }
 
+## ----------------------------------------------------------------
 
-## Write a short comment describing this function
+## Function cacheSolve
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+## Take named list argument x. If inverse already cached then return that
+## otherwise calculate its inverse and store it back in the global environment
+
+## Argument x takes a named list populated with functions from makeCacheMatrix (see usage above)
+
+cacheSolve <- function(x, ...) { ## Argument x assigned to a named list returned by a call to makeCacheMatrix
+                                 ## for inversion
+  
+  ## Return cached matrix inverse or compute it otherwise
+  
+  invmtx<-x$getinverse() ## assign inverse matrix(maybe null) to invmtx
+  
+  if(!is.null(invmtx)){ ## matrix inverse has already been cached   
+    message("getting cached data")
+    return(invmtx)
+  }
+  
+  ## inverse has not been calculated yet,we do that now
+  
+  rawMatrix<-x$get() ## access get function from named list x to retrieve raw matrix for inversion
+  
+  j<-solve(rawMatrix) ## compute inverse of the matrix
+  
+  x$setinverse(j) ## access setinverse function and cache the inverse
+  
+  j ## report the inverted matrix
 }
+
+## ----------------------------------------------------------------
