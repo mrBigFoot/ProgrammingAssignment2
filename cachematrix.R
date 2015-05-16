@@ -13,21 +13,21 @@
 
 ##      -Two functions to demonstrate lexical scoping in R-
 
-## 1/                  makeCacheMatix(x) 
+## Function 1:                makeCacheMatix(x) 
 
 ## Returns a named list to implement caching
 ## This list exposes functions to both set and access the
 ## target matrix and its inverse.
 
-## 2/                   cacheSolve(x,...)
+## Function 2:                cacheSolve(x,...)
 
 ## cacheSolve(x,...) inspects the global environment to see if the inverse
 ## can simply be cached. Otherwise inverse is computed. 
 
 
-## usage: closure<-makeCacheMatrix(yourSquareMatrix)
-##        cacheSolve(closure) first call will compute inverse and cache it.
-##        cacheSolve(closure) second call will report usage of cache
+## usage: matrixCacher<-makeCacheMatrix(yourSquareMatrix)
+##        cacheSolve(matrixCacher) first call will compute inverse and cache it.
+##        cacheSolve(matrixCacher) second call will report usage of cache
 
 ## ------------------------------------------------------------------
 
