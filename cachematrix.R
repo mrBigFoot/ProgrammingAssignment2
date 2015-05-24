@@ -22,7 +22,7 @@
 ## Function 2:                cacheSolve(x,...)
 
 ## cacheSolve(x,...) inspects the global environment to see if the inverse
-## can simply be cached. Otherwise inverse is computed. 
+## can simply be cached. Otherwise the inverse is computed. 
 
 
 ## usage: matrixCacher<-makeCacheMatrix(yourSquareMatrix)
@@ -35,7 +35,7 @@
  
 ## This function returns a named list referring to four 
 ## internally defined functions which in effect
-## are returned as parameters. (functions are first class citizen in R)
+## are returned as parameters. (functions are first class citizens in R)
 
 makeCacheMatrix <- function(x = matrix()) {
   
@@ -43,7 +43,7 @@ makeCacheMatrix <- function(x = matrix()) {
   
   set<-function(y){ ## assigns a new matrix y to x, in the global environment 
     ## for subsequent inversion. This function will be called via the return
-    ## named list and so x will be taken from theglobal environment due to 
+    ## named list and so x will be taken from the global environment due to 
     ## lexical scoping.
     x<<-y
     mtx_cached<-NULL ## re-initialize to null
